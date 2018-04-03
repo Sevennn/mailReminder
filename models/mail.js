@@ -4,7 +4,7 @@ import user from "./config"
 
 
 const smtpTransport = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "smtp.163.com",
     port: 465,
     secureConnection: true,
     auth: {
@@ -15,7 +15,7 @@ const smtpTransport = nodemailer.createTransport({
 
 const mailOptions = {
     from: user.username, // 发送邮箱
-    to: "13580710073@163.com", // 接受邮箱
+    to: user.username, // 接受邮箱
     subject: ``, // 标题
     html: `` // 内容
 }
