@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+</script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <title>定时提醒服务设定</title>
+    <style>
+        html,body {
+            width: 100%;
+            height: 100%;
+        }
+        .flex-ctl {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid flex-ctl">
+        <div class="row">
+            <div class="input-group">
+                <span class="input-group-addon">Date</span>
+                <input type="date" class="form-control" id="date">
+              </div>
+              <div class="input-group">
+                    <span class="input-group-addon">time</span>
+                    <input type="time" class="form-control" id="time">
+                  </div>
+              <div class="input-group">
+                <span class="input-group-addon">Description</span>
+                <input type="text" class="form-control" id="des">
+              </div>
+              <div class="input-group">
+              <label for="sele">选择重要程度（从1到5）</label>
+              <select class="form-control" id="sele">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                  </div>
+               <hr/>
+              <button type="button" class="btn btn-primary" id="set">Set</button>
+
+        </div>
+    </div>
+    <script>
+        let btn = document.getElementById('set');
+        btn.addEventListener("click", function(e){
+            e.preventDefault();
+            let date = document.getElementById("date").value;
+            let time = document.getElementById("time").value;
+            let des = document.getElementById("des").value;
+            let imp = document.getElementById("sele").value;
+            $.post('/set',{'date':date,"time":time, "des": des, "imp": imp}, (r)=>{
+                if (r.success) {
+                    alert("Set Success!")
+                } else {
+                    alert("Set failed!")
+                }
+            });
+        })
+    </script>
+</body>
+</html>

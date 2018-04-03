@@ -1,0 +1,89 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    // 最新版本的 Bootstrap 核心 CSS 文件
+    link(rel='stylesheet', href='https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
+    link(rel='stylesheet', href='./datetimepicker/css/bootstrap-datetimepicker.min.css')
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+    // 最新的 Bootstrap 核心 JavaScript 文件
+    script(src='https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
+    script(src='./datetimepicker/js/bootstrap-datetimepicker.min.js')
+    title 定时提醒服务设定
+    style.
+      html,body {
+      width: 100%;
+      height: 100%;
+      }
+      .flex-ctl {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      }
+  body
+    .container-fluid.flex-ctl
+      .row
+        .form-group
+          .input-group.date.form_datetime.col-md-5(data-link-field='dtp_input1')
+            span.input-group-addon End Time
+            input#date.form-control(size='16', type='text', value='', required='required')
+            span.input-group-addon
+              span.glyphicon.glyphicon-th
+          // <input type="hidden" id="dtp_input1" value="" /><br/>
+        .form-group
+          .input-group
+            span.input-group-addon Title
+            input#title.form-control(type='text', required='required')
+        .form-group
+          .input-group
+            span.input-group-addon Description
+            input#des.form-control(type='text', required='required')
+        .form-group
+          .input-group.date.form_time.col-md-5(data-date-format='hh:ii')
+            span.input-group-addon 选择每天提醒时间
+            input#freqtime.form-control(size='16', type='text', value='', required='required')
+            span.input-group-addon
+              span.glyphicon.glyphicon-time
+          // <input type="hidden" id="dtp_input3" value="" /><br/>
+        hr
+        button#set.btn.btn-primary(type='button') Set
+    script.
+      $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd/hh:ii'});
+      $(".form_time").datetimepicker(
+      {weekStart: 1,
+      todayBtn:  1,
+      autoclose: 1,
+      todayHighlight: 1,
+      startView: 1,
+      minView: 0,
+      maxView: 1,
+      forceParse: 0});
+      let btn = document.getElementById('set');
+      var flag = false;
+      btn.addEventListener("click", function(e){
+      e.preventDefault();
+      if (flag) return;
+      flag = true;
+      let date = document.getElementById("date").value;
+      let freqtime = document.getElementById("freqtime").value;
+      let des = document.getElementById("des").value;
+      let title = document.getElementById("title").value;
+      if (!date || !freqtime || !des || !title) {
+      alert("Please input every blank line!!!");
+      flag = false;
+      return;
+      }
+      $.post('/set',{'date':date, "des": des, "title": title, "freqtime":freqtime}, (r)=>{
+      if (r.success) {
+      alert("Set Success!")
+      flag = false;
+      } else {
+      alert("Set failed!")
+      flag = false;
+      }
+      });
+      })
+
